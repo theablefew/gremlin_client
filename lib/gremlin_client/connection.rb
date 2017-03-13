@@ -6,18 +6,18 @@ module GremlinClient
     attr_reader :connection_timeout, :timeout, :gremlin_script_path
 
     STATUS = {
-      success: 200,
-      no_content: 204,
-      partial_content: 206,
+      :success => 200,
+      :no_content => 204,
+      :partial_content => 206,
 
-      unauthorized: 401,
-      authenticate: 407,
-      malformed_request: 498,
-      invalid_request_arguments: 499,
-      server_error: 500,
-      script_evaluation_error: 597,
-      server_timeout: 598,
-      server_serialization_error: 599
+      :unauthorized => 401,
+      :authenticate => 407,
+      :malformed_request => 498,
+      :invalid_request_arguments => 499,
+      :server_error => 500,
+      :script_evaluation_error => 597,
+      :server_timeout => 598,
+      :server_serialization_error => 599
     }
 
     class << self
@@ -31,12 +31,12 @@ module GremlinClient
     #   port    => listen port of the server
     #   timeout => how long the client might wait for response from the server
     def initialize(
-      host: 'localhost',
-      port: 8182,
-      connection_timeout: 1,
-      timeout: 10,
-      gremlin_script_path: '.',
-      autoconnect: true
+      :host => 'localhost',
+      :port => 8182,
+      :connection_timeout => 1,
+      :timeout => 10,
+      :gremlin_script_path => '.',
+      :autoconnect => true
     )
       @host = host
       @port = port
@@ -72,7 +72,7 @@ module GremlinClient
     def send_query(command, bindings={})
       wait_connection
       reset_request
-      @ws.send(build_message(command, bindings), { type: 'text' })
+      @ws.send(build_message(command, bindings), { :type => 'text' })
       wait_response
       return treat_response
     end
@@ -151,13 +151,13 @@ module GremlinClient
 
       def build_message(command, bindings)
         message = {
-          requestId: @request_id,
-          op: 'eval',
-          processor: '',
-          args: {
-            gremlin: command,
-            bindings: bindings,
-            language: 'gremlin-groovy'
+          :requestId => @request_id,
+          :op => 'eval',
+          :processor => '',
+          :args => {
+            :gremlin => command,
+            :bindings => bindings,
+            :language => 'gremlin-groovy'
           }
         }
         JSON.generate(message)
